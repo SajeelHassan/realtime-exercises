@@ -24,11 +24,15 @@ const server = http.createServer((request, response) => {
   });
 });
 
-/*
- *
- * your code goes here
- *
- */
+server.on("upgrade", (req, socket)=>{
+  if (req.headers["upgrade"] === 'websocket'){
+    socket.end("HTTP/1.1 400 Bad Request")
+    return;
+  }
+
+  console.log("UPgrade requested!")
+
+})
 
 const port = process.env.PORT || 8080;
 server.listen(port, () =>
